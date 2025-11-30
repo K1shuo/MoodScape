@@ -1,0 +1,31 @@
+// server/prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// 用户模型
+model User {
+  id        Int      @id @default(autoincrement())
+  username  String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  // 关联关系：一个用户可以有多条情绪记录
+  moods     MoodEntry[]
+}
+
+// 情绪记录模型
+model MoodEntry {
+  id        Int      @id @default(autoincrement())
+  moodType  String   // 例如: "Happy", "Sad"
+  note      String?  // 允许为空
+  createdAt DateTime @default(now())
+  userId    Int
+  // 关联关系：这条记录属于哪个用户
+  user      User     @relation(fields: [userId], references: [id])
+}

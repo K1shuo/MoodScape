@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    /* 基础配置 */
+    "target": "es2016",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "baseUrl": "./",
+    "outDir": "./dist",
+    "rootDir": "./src",
+    
+    /* 关键修复：关闭严格模块语法检查 */
+    "verbatimModuleSyntax": false,
+    
+    /* 常用配置 */
+    "strict": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
+}
