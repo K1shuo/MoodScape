@@ -3,8 +3,10 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-// 1. 引入 Lucide 图标
+// 引入 Lucide 图标
 import { Smile, Frown, Meh, CloudRain, LogOut, History, Send } from "lucide-react";
+// 引入我们刚才写的图表组件
+import MoodChart from "./MoodChart";
 
 interface Mood {
   id: number;
@@ -20,7 +22,7 @@ const Dashboard = () => {
   const { logout } = useAuth();
   const navigate = useNavigate();
 
-  // 2. 辅助函数：根据心情返回对应的图标
+  // 辅助函数：根据心情返回对应的图标
   const getMoodIcon = (type: string) => {
     switch (type) {
       case "Happy":
@@ -61,7 +63,7 @@ const Dashboard = () => {
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setNote("");
-      fetchMoods();
+      fetchMoods(); // 提交后刷新列表和图表
     } catch (err) {
       alert("Failed to log mood");
     }
@@ -88,7 +90,10 @@ const Dashboard = () => {
           </button>
         </div>
 
-        {/* Input Card */}
+        {/* 1. 可视化图表区域 */}
+        <MoodChart moods={moods} />
+
+        {/* 2. 心情输入卡片 */}
         <div className="bg-gray-800 p-6 rounded-lg shadow-lg mb-8 border border-gray-700">
           <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
             <Smile className="text-purple-400" />
@@ -100,7 +105,6 @@ const Dashboard = () => {
               onChange={(e) => setMoodType(e.target.value)}
               className="bg-gray-700 p-3 rounded text-white border border-gray-600 focus:border-purple-500 outline-none transition"
             >
-              {/* 3. 文本选项 */}
               <option value="Happy">Happy</option>
               <option value="Sad">Sad</option>
               <option value="Calm">Calm</option>
@@ -123,7 +127,7 @@ const Dashboard = () => {
           </form>
         </div>
 
-        {/* History List */}
+        {/* 3. 历史记录列表 */}
         <div className="space-y-4">
           <h2 className="text-xl font-semibold flex items-center gap-2">
             <History className="text-gray-400" />
@@ -142,7 +146,6 @@ const Dashboard = () => {
               className="bg-gray-800 p-4 rounded-lg flex justify-between items-center border-l-4 border-purple-500 shadow-sm hover:bg-gray-750 transition"
             >
               <div className="flex items-center gap-4">
-                {/* 4. 图标 */}
                 <div className="p-2 bg-gray-700 rounded-full">
                   {getMoodIcon(mood.moodType)}
                 </div>
